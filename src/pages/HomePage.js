@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import ListCategories from '../components/ListCategories';
 import { getProductsFromCategoryAndQuery } from '../services/api';
 
 export default class HomePage extends Component {
@@ -49,6 +50,7 @@ export default class HomePage extends Component {
         <p data-testid="home-initial-message">
           Digite algum termo de pesquisa ou escolha uma categoria.
         </p>
+        <ListCategories />
         <Link
           to="/card"
           data-testid="shopping-cart-button"
