@@ -62,7 +62,6 @@ export default class HomePage extends Component {
         <p data-testid="home-initial-message">
           Digite algum termo de pesquisa ou escolha uma categoria.
         </p>
-        <ListCategories handleClick={ this.handleClick } />
         <Link
           to="/card"
           data-testid="shopping-cart-button"
