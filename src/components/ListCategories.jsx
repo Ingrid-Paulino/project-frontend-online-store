@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { getCategories } from '../services/api';
 import Loading from './Loading';
+import { getCategories } from '../services/api';
 
 export default class ListCategories extends Component {
   constructor() {
