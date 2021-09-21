@@ -10,23 +10,22 @@ export default class HomePage extends Component {
     this.state = {
       queryInput: '',
       products: [],
-      categorySelect: '',
+      categoryId: '',
     };
   }
 
-  handleChange = ({ target }) => {
-    const { name, value } = target;
+  handleChange = ({ target: { name, value } }) => {
     this.setState({
       [name]: value,
     });
   }
 
   handleClick = async ({ target: { value } }) => {
+    const { queryInput, categoryId } = this.state;
     this.setState({
-      categorySelect: value,
+      categoryId: value,
     });
-    const { queryInput, categorySelect } = this.state;
-    const getAPI = await getProductsFromCategoryAndQuery(categorySelect, queryInput);
+    const getAPI = await getProductsFromCategoryAndQuery(categoryId, queryInput);
     const { results } = getAPI;
     this.setState({
       products: results,
@@ -34,27 +33,35 @@ export default class HomePage extends Component {
   }
 
   showProducts(API) {
-    return (API.map((product) => (
+    return (API.map(({ id, title, thumbnail, price, condition }) => (
       <>
-        <p key={ product.id } data-testid="product">
+        <p key={ id } data-testid="product">
           {' '}
-          { product.title }
+          { title }
           {' '}
         </p>
-        <img src={ product.thumbnail } alt={ `Foto de ${product.title}` } />
-        <p>{ `Preço: R$${product.price}` }</p>
+        <img src={ thumbnail } alt={ `Foto de ${title}` } />
+        <p>{ `Preço: R$${price}` }</p>
+        <Link
+          to={ { pathname: `/details/${id}`,
+            state: { id, title, thumbnail, price, condition } } }
+          data-testid="product-detail-link"
+        >
+          Details
+        </Link>
       </>
     )));
   }
 
   render() {
     const { products } = this.state;
+    console.log(products);
     return (
       <div>
+        <ListCategories handleClick={ this.handleClick } />
         <p data-testid="home-initial-message">
           Digite algum termo de pesquisa ou escolha uma categoria.
         </p>
-        <ListCategories handleClick={ this.handleClick } />
         <Link
           to="/card"
           data-testid="shopping-cart-button"
@@ -71,6 +78,7 @@ export default class HomePage extends Component {
           data-testid="query-button"
           type="button"
           onClick={ this.handleClick }
+          value=""
         >
           Procurar
         </button>

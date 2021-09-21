@@ -21,26 +21,25 @@ export default class ListCategories extends Component {
     this.setState({ loading: true });
     const categoriesAPI = await getCategories();
     this.setState({ categories: categoriesAPI, loading: false });
-    // console.log(categoriesAPI);
   };
 
   categoriesList = () => {
     const { categories } = this.state;
     const { handleClick } = this.props;
+
     return (
       <aside>
         {categories.map(({ id, name }) => (
-          <div key={ id }>
+          <label key={ id } htmlFor={ id }>
             <input
               data-testid="category"
-              id={ id }
               type="radio"
-              name="opcao"
-              value={ id }
               onClick={ handleClick }
+              name="category"
+              value={ id }
             />
             {name}
-          </div>
+          </label>
         ))}
       </aside>
     );
@@ -59,4 +58,6 @@ export default class ListCategories extends Component {
   }
 }
 
-ListCategories.propTypes = { handleClick: PropTypes.func.isRequired };
+ListCategories.propTypes = {
+  handleClick: PropTypes.func.isRequired,
+};
