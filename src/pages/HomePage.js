@@ -10,6 +10,7 @@ export default class HomePage extends Component {
     this.state = {
       queryInput: '',
       products: [],
+      categorySelect: '',
     };
   }
 
@@ -20,9 +21,12 @@ export default class HomePage extends Component {
     });
   }
 
-  handleClick = async () => {
-    const { queryInput } = this.state;
-    const getAPI = await getProductsFromCategoryAndQuery('', queryInput);
+  handleClick = async ({ target: { value } }) => {
+    this.setState({
+      categorySelect: value,
+    });
+    const { queryInput, categorySelect } = this.state;
+    const getAPI = await getProductsFromCategoryAndQuery(categorySelect, queryInput);
     const { results } = getAPI;
     this.setState({
       products: results,
@@ -38,7 +42,7 @@ export default class HomePage extends Component {
           {' '}
         </p>
         <img src={ product.thumbnail } alt={ `Foto de ${product.title}` } />
-        <p>{ `Preço: R$${product.price},00` }</p>
+        <p>{ `Preço: R$${product.price}` }</p>
       </>
     )));
   }
@@ -50,7 +54,7 @@ export default class HomePage extends Component {
         <p data-testid="home-initial-message">
           Digite algum termo de pesquisa ou escolha uma categoria.
         </p>
-        <ListCategories />
+        <ListCategories handleClick={ this.handleClick } />
         <Link
           to="/card"
           data-testid="shopping-cart-button"

@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import Loading from './Loading';
 import { getCategories } from '../services/api';
 
@@ -25,16 +26,23 @@ export default class ListCategories extends Component {
 
   categoriesList = () => {
     const { categories } = this.state;
-    console.log(categories);
-
+    const { handleClick } = this.props;
     return (
-      <section>
+      <aside>
         {categories.map(({ id, name }) => (
-          <p data-testid="category" key={ id }>
+          <div key={ id }>
+            <input
+              data-testid="category"
+              id={ id }
+              type="radio"
+              name="opcao"
+              value={ id }
+              onClick={ handleClick }
+            />
             {name}
-          </p>
+          </div>
         ))}
-      </section>
+      </aside>
     );
   };
 
@@ -50,3 +58,5 @@ export default class ListCategories extends Component {
     );
   }
 }
+
+ListCategories.propTypes = { handleClick: PropTypes.func.isRequired };
