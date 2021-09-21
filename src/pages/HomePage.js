@@ -1,6 +1,6 @@
-import React, { Component } from 'react'
-import ListCategories from '../components/ListCategories';
+import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import ListCategories from '../components/ListCategories';
 import { getProductsFromCategoryAndQuery } from '../services/api';
 
 export default class HomePage extends Component {
