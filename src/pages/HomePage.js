@@ -7,11 +7,9 @@ import { getProductsFromCategoryAndQuery } from '../services/api';
 export default class HomePage extends Component {
   constructor() {
     super();
-
     this.state = {
       queryInput: '',
       products: [],
-      categoryId: '',
     };
   }
 
@@ -22,11 +20,8 @@ export default class HomePage extends Component {
   }
 
   handleClick = async ({ target: { value } }) => {
-    const { queryInput, categoryId } = this.state;
-    this.setState({
-      categoryId: value,
-    });
-    const getAPI = await getProductsFromCategoryAndQuery(categoryId, queryInput);
+    const { queryInput } = this.state;
+    const getAPI = await getProductsFromCategoryAndQuery(value, queryInput);
     const { results } = getAPI;
     this.setState({
       products: results,
@@ -49,7 +44,7 @@ export default class HomePage extends Component {
         <p>{ `Preço: R$${product.price}` }</p>
         <Link
           to={ { pathname: `/details/${product.id}`,
-            state: { product } } }
+            state: product } }
           data-testid="product-detail-link"
         >
           Details
@@ -75,9 +70,10 @@ export default class HomePage extends Component {
         </p>
         <Link
           to="/card"
+          className="btn btn-primary"
           data-testid="shopping-cart-button"
         >
-          <button type="submit">Cart</button>
+          Cart
         </Link>
         <input
           data-testid="query-input"

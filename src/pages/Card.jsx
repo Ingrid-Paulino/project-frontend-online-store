@@ -5,16 +5,16 @@ import { getCartItens } from '../services/AddToCart';
 export default class Card extends Component {
   constructor() {
     super();
-
     this.state = {
       load: true,
       itens: [],
     };
   }
 
-  async componentDidMount() {
-    const cartItens = await getCartItens();
+  componentDidMount() {
+    const cartItens = getCartItens();
     this.addToState(cartItens);
+    console.log(cartItens);
   }
 
   addToState = (itens) => {
@@ -26,13 +26,13 @@ export default class Card extends Component {
 
   cartList(itens) {
     return (
-      itens.map(({ title, id, thumbnail, price }) => (
+      itens.map(({ title, id, thumbnail, price, quantidade = 1 }) => (
         <div key={ id }>
           <p data-testid="shopping-cart-product-name">{ title }</p>
           <img src={ thumbnail } alt={ `Foto de ${id}` } />
           <p>{`Preço: R$${price}`}</p>
           <p data-testid="shopping-cart-product-quantity">
-            1
+            { quantidade }
           </p>
         </div>
       ))
@@ -49,11 +49,10 @@ export default class Card extends Component {
 
   render() {
     const { load, itens } = this.state;
-    console.log(itens);
-    if (!itens.length) return this.emptyCart();
+    if (load) return <Loading />;
     return (
       <div>
-        { load ? <Loading /> : this.cartList(itens) }
+        { !itens.length ? this.emptyCart() : this.cartList(itens) }
       </div>
     );
   }
