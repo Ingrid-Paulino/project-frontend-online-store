@@ -1,16 +1,15 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import ListCategories from '../components/ListCategories';
+import { addToCart } from '../services/AddToCart';
 import { getProductsFromCategoryAndQuery } from '../services/api';
 
 export default class HomePage extends Component {
   constructor() {
     super();
-
     this.state = {
       queryInput: '',
       products: [],
-      categoryId: '',
     };
   }
 
@@ -21,41 +20,48 @@ export default class HomePage extends Component {
   }
 
   handleClick = async ({ target: { value } }) => {
-    const { queryInput, categoryId } = this.state;
-    this.setState({
-      categoryId: value,
-    });
-    const getAPI = await getProductsFromCategoryAndQuery(categoryId, queryInput);
+    const { queryInput } = this.state;
+    const getAPI = await getProductsFromCategoryAndQuery(value, queryInput);
     const { results } = getAPI;
     this.setState({
       products: results,
     });
   }
 
+  handleCart = (item) => {
+    addToCart(item);
+  }
+
   showProducts(API) {
-    return (API.map(({ id, title, thumbnail, price, condition }) => (
+    return (API.map((product) => (
       <>
-        <p key={ id } data-testid="product">
+        <p key={ product.id } data-testid="product">
           {' '}
-          { title }
+          { product.title }
           {' '}
         </p>
-        <img src={ thumbnail } alt={ `Foto de ${title}` } />
-        <p>{ `Preço: R$${price}` }</p>
+        <img src={ product.thumbnail } alt={ `Foto de ${product.title}` } />
+        <p>{ `Preço: R$${product.price}` }</p>
         <Link
-          to={ { pathname: `/details/${id}`,
-            state: { id, title, thumbnail, price, condition } } }
+          to={ { pathname: `/details/${product.id}`,
+            state: product } }
           data-testid="product-detail-link"
         >
           Details
         </Link>
+        <button
+          data-testid="product-add-to-cart"
+          type="button"
+          onClick={ () => this.handleCart(product) }
+        >
+          Add to Cart
+        </button>
       </>
     )));
   }
 
   render() {
     const { products } = this.state;
-    console.log(products);
     return (
       <div>
         <ListCategories handleClick={ this.handleClick } />
@@ -64,9 +70,10 @@ export default class HomePage extends Component {
         </p>
         <Link
           to="/card"
+          className="btn btn-primary"
           data-testid="shopping-cart-button"
         >
-          <button type="submit">Add to Cart</button>
+          Cart
         </Link>
         <input
           data-testid="query-input"
