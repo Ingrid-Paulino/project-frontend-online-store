@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Loading from '../Components/Loading';
+import Loading from '../components/Loading';
 import { getCartItens } from '../services/AddToCart';
 
 export default class Card extends Component {
