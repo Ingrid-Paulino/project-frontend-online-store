@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import ListCategories from '../Components/ListCategories';
+import { addToCart } from '../services/AddToCart';
 import { getProductsFromCategoryAndQuery } from '../services/api';
 
 export default class HomePage extends Component {
@@ -32,30 +33,40 @@ export default class HomePage extends Component {
     });
   }
 
+  handleCart = (item) => {
+    addToCart(item);
+  }
+
   showProducts(API) {
-    return (API.map(({ id, title, thumbnail, price, condition }) => (
+    return (API.map((product) => (
       <>
-        <p key={ id } data-testid="product">
+        <p key={ product.id } data-testid="product">
           {' '}
-          { title }
+          { product.title }
           {' '}
         </p>
-        <img src={ thumbnail } alt={ `Foto de ${title}` } />
-        <p>{ `Preço: R$${price}` }</p>
+        <img src={ product.thumbnail } alt={ `Foto de ${product.title}` } />
+        <p>{ `Preço: R$${product.price}` }</p>
         <Link
-          to={ { pathname: `/details/${id}`,
-            state: { id, title, thumbnail, price, condition } } }
+          to={ { pathname: `/details/${product.id}`,
+            state: { product } } }
           data-testid="product-detail-link"
         >
           Details
         </Link>
+        <button
+          data-testid="product-add-to-cart"
+          type="button"
+          onClick={ () => this.handleCart(product) }
+        >
+          Add to Cart
+        </button>
       </>
     )));
   }
 
   render() {
     const { products } = this.state;
-    console.log(products);
     return (
       <div>
         <ListCategories handleClick={ this.handleClick } />
@@ -66,7 +77,7 @@ export default class HomePage extends Component {
           to="/card"
           data-testid="shopping-cart-button"
         >
-          <button type="submit">Add to Cart</button>
+          <button type="submit">Cart</button>
         </Link>
         <input
           data-testid="query-input"
