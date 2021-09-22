@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { addToCart } from '../services/AddToCart';
 import { Link } from 'react-router-dom';
+import { addToCart } from '../services/AddToCart';
 
 export default class ProductDetails extends Component {
   render() {
