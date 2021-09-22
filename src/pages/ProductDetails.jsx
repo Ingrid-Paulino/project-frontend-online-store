@@ -1,7 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import ProductReview from '../components/ProductReview';
 
 export default class ProductDetails extends Component {
+  handleSubmit = (e) => {
+    e.preventDefault();
+  }
+
   render() {
     const { location: { state } } = this.props;
     return (
@@ -15,6 +20,15 @@ export default class ProductDetails extends Component {
           <p>Especificações:</p>
           <p>{ `Condição: ${state.condition}` }</p>
         </section>
+        <form>
+          <ProductReview />
+          <button
+            type="submit"
+            onClick={ (e) => this.handleSubmit(e) }
+          >
+            Avaliar
+          </button>
+        </form>
       </div>
     );
   }
