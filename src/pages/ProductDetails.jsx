@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import ProductReview from '../components/ProductReview';
 
 export default class ProductDetails extends Component {
@@ -19,6 +20,20 @@ export default class ProductDetails extends Component {
         <section>
           <p>Especificações:</p>
           <p>{ `Condição: ${state.condition}` }</p>
+          <button
+            type="button"
+            data-testid="product-detail-add-to-cart"
+            onClick={ () => addToCart(state) }
+          >
+            Adicionar ao carrinho
+          </button>
+          <Link
+            to="/card"
+            className="btn btn-primary"
+            data-testid="shopping-cart-button"
+          >
+            Cart
+          </Link>
         </section>
         <form>
           <ProductReview />
