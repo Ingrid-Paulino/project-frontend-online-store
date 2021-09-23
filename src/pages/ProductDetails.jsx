@@ -1,9 +1,13 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import { addToCart } from '../services/AddToCart';
+import ProductReview from '../components/ProductReview';
 
 export default class ProductDetails extends Component {
+  handleSubmit = (e) => {
+    e.preventDefault();
+  }
+
   render() {
     const { location: { state } } = this.props;
     return (
@@ -31,6 +35,15 @@ export default class ProductDetails extends Component {
             Cart
           </Link>
         </section>
+        <form>
+          <ProductReview />
+          <button
+            type="submit"
+            onClick={ (e) => this.handleSubmit(e) }
+          >
+            Avaliar
+          </button>
+        </form>
       </div>
     );
   }
