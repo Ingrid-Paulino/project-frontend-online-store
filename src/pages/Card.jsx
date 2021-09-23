@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import CartList from '../components/CartList';
 import Loading from '../components/Loading';
 import { getCartItens } from '../services/AddToCart';
 
@@ -14,7 +15,6 @@ export default class Card extends Component {
   componentDidMount() {
     const cartItens = getCartItens();
     this.addToState(cartItens);
-    console.log(cartItens);
   }
 
   addToState = (itens) => {
@@ -26,16 +26,7 @@ export default class Card extends Component {
 
   cartList(itens) {
     return (
-      itens.map(({ title, id, thumbnail, price, quantidade = 1 }) => (
-        <div key={ id }>
-          <p data-testid="shopping-cart-product-name">{ title }</p>
-          <img src={ thumbnail } alt={ `Foto de ${id}` } />
-          <p>{`Preço: R$${price}`}</p>
-          <p data-testid="shopping-cart-product-quantity">
-            { quantidade }
-          </p>
-        </div>
-      ))
+      <CartList itens={ itens } />
     );
   }
 

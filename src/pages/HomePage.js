@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import ListCategories from '../components/ListCategories';
-import { addToCart } from '../services/AddToCart';
+import ShowProducts from '../components/ShowProducts';
 import { getProductsFromCategoryAndQuery } from '../services/api';
 
 export default class HomePage extends Component {
@@ -26,38 +26,6 @@ export default class HomePage extends Component {
     this.setState({
       products: results,
     });
-  }
-
-  handleCart = (item) => {
-    addToCart(item);
-  }
-
-  showProducts(API) {
-    return (API.map((product) => (
-      <>
-        <p key={ product.id } data-testid="product">
-          {' '}
-          { product.title }
-          {' '}
-        </p>
-        <img src={ product.thumbnail } alt={ `Foto de ${product.title}` } />
-        <p>{ `Preço: R$${product.price}` }</p>
-        <Link
-          to={ { pathname: `/details/${product.id}`,
-            state: product } }
-          data-testid="product-detail-link"
-        >
-          Details
-        </Link>
-        <button
-          data-testid="product-add-to-cart"
-          type="button"
-          onClick={ () => this.handleCart(product) }
-        >
-          Add to Cart
-        </button>
-      </>
-    )));
   }
 
   render() {
@@ -89,7 +57,7 @@ export default class HomePage extends Component {
         >
           Procurar
         </button>
-        { products.length > 0 ? this.showProducts(products)
+        { products.length > 0 ? <ShowProducts products={ products } />
           : <p>Nenhum Produto Encontrado</p> }
       </div>
     );
