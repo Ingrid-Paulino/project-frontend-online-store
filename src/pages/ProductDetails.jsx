@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import ProductReview from '../components/ProductReview';
+import { addToCart } from '../services/AddToCart';
 
 export default class ProductDetails extends Component {
   handleSubmit = (e) => {

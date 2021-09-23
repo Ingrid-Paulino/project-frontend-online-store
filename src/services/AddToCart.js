@@ -27,7 +27,6 @@ export const addToCart = (item) => {
       }
       return cartI;
     });
-    console.log(map);
     saveCartItens(map);
   } else {
     saveCartItens([...cart, item]);
