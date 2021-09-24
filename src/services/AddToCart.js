@@ -4,7 +4,7 @@ if (!JSON.parse(localStorage.getItem(CART_ITENS))) {
   localStorage.setItem(CART_ITENS, JSON.stringify([]));
 }
 
-const readCartItens = () => JSON.parse(localStorage.getItem(CART_ITENS));
+export const readCartItens = () => JSON.parse(localStorage.getItem(CART_ITENS));
 
 const saveCartItens = (cartItens) => localStorage
   .setItem(CART_ITENS, JSON.stringify(cartItens));
@@ -22,7 +22,7 @@ export const addToCart = (item) => {
         if (cartI.quantidade) {
           cartI.quantidade += 1;
         } else {
-          cartI.quantidade = 2;
+          cartI.quantidade = 1;
         }
       }
       return cartI;
@@ -31,4 +31,18 @@ export const addToCart = (item) => {
   } else {
     saveCartItens([...cart, item]);
   }
+};
+
+export const subFromCart = (item) => {
+  const cart = readCartItens();
+  if (item.quantidade > 1) {
+    const map = cart.map((cartItem) => {
+      if (cartItem.id === item.id) {
+        cartItem.quantidade -= 1;
+      }
+      return cartItem;
+    });
+    saveCartItens(map);
+  }
+  saveCartItens([...cart, item]);
 };
