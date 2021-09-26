@@ -19,10 +19,11 @@ export const addToCart = (item) => {
   if (cart.some((cartItem) => cartItem.id === item.id)) {
     const map = cart.map((cartI) => {
       if (cartI.id === item.id) {
-        if (cartI.quantidade) {
+        if (!cartI.quantidade) {
+          cartI.quantidade = 1;
           cartI.quantidade += 1;
         } else {
-          cartI.quantidade = 1;
+          cartI.quantidade += 1;
         }
       }
       return cartI;
@@ -35,14 +36,18 @@ export const addToCart = (item) => {
 
 export const subFromCart = (item) => {
   const cart = readCartItens();
-  if (item.quantidade > 1) {
+  if (item.quantidade !== 1) {
     const map = cart.map((cartItem) => {
       if (cartItem.id === item.id) {
         cartItem.quantidade -= 1;
+        if (cartItem.quantidade === 0) {
+          cartItem.quantidade = 1;
+        }
       }
       return cartItem;
     });
     saveCartItens(map);
+  } else {
+    item.quantidade -= 1;
   }
-  saveCartItens([...cart, item]);
 };
