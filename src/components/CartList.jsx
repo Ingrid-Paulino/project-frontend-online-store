@@ -1,21 +1,33 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import CartItem from './CartItem';
+import { readCartItens } from '../services/AddToCart';
 
 export default class CartList extends Component {
+  constructor() {
+    super();
+
+    this.state = {
+      itens: [],
+    };
+  }
+
+  componentDidMount() {
+    this.getCartItens();
+  }
+
   handleCartList(itens) {
-    return itens.map(({ title, id, thumbnail, price, quantidade = 1 }) => (
-      <div key={ id }>
-        <p data-testid="shopping-cart-product-name">{ title }</p>
-        <img src={ thumbnail } alt={ `Foto de ${id}` } />
-        <p>{`Preço: R$${price}`}</p>
-        <p data-testid="shopping-cart-product-quantity">
-          { quantidade }
-        </p>
-      </div>));
+    return itens.map((item) => <CartItem key={ item.id } item={ item } />);
+  }
+
+  getCartItens = () => {
+    const itens = readCartItens();
+    this.setState({
+      itens,
+    });
   }
 
   render() {
-    const { itens } = this.props;
+    const { itens } = this.state;
     return (
       <div>
         <h1> Carrinho: </h1>
@@ -24,7 +36,3 @@ export default class CartList extends Component {
     );
   }
 }
-
-CartList.propTypes = {
-  itens: PropTypes.arrayOf(PropTypes.object).isRequired,
-};
